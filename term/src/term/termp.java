@@ -22,6 +22,9 @@ public class termp {
 			while(rs.next())
 				System.out.println(rs.getInt(1)+" "+rs.getString(2));
 			}
+			else if (menu == 2) {
+				System.out.println("commit");
+			}
 			con.close();
 		
 		}catch(Exception e) {
