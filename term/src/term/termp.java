@@ -90,7 +90,7 @@ public class termp {
 				pstmt.setString(7,h);
 				r=pstmt.executeUpdate();
 				
-				System.out.println("commit");
+				System.out.println("commit ");
 				
 				if(r==0) {
 					System.out.println("내용 입력에 실패하였습니다.");
