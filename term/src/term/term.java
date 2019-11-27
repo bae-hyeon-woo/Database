@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Scanner;
-public class termp {
+public class term {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -33,6 +33,7 @@ public class termp {
 					System.out.println(rs.getString(1)+" "+rs.getString(2));
 				break;
 			case 2:
+				System.out.println("player table 값 입력 : (player_id, name, position, age, height, weight, t_name");
 				a=sc.next();
 				b=sc.next();
 				c=sc.next();
@@ -74,6 +75,20 @@ public class termp {
                 }else{
                     System.out.println("수정 되었습니다.");
                 }
+                break;
+			case 5:
+				System.out.println("검색할 테이블 입력 : ");
+				a=sc.next();
+				System.out.println("검색할 내용 입력 : ");
+				b=sc.next();
+				rs=stmt.executeQuery("select * from "+a+" where "+b);
+				int i=1;
+				while(rs.next())
+					while(rs.getString(i)!=null) {
+					System.out.print(rs.getString(i)+" ");
+					i++;
+					}
+				break;
 			}
 			con.close();
 		}catch(Exception e) {
