@@ -49,7 +49,7 @@ public class term {
 				System.out.println("7.insert coach,coach_contract,league,participation,team_coach");
 				System.out.println("8.insert stadium  9.insert schedule  10.find win,draw,loss");
 
-				System.out.println(" ");
+				System.out.println("commit ");
 
 				System.out.println("99. quit");
 				menu=sc.nextInt();
