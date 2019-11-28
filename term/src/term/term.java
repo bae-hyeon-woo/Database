@@ -23,7 +23,7 @@ public class term {
 
 			Connection con=DriverManager.getConnection("jdbc:mysql://192.168.56.101:4567/team_manage","bae","wjdgus123");
 
-
+			PreparedStatement pstmt;
 			Scanner sc=new Scanner(System.in);
 			Statement stmt=con.createStatement();
 			int menu = 0;
@@ -45,7 +45,7 @@ public class term {
 			String table;
 			do {
 				System.out.println("1.select table    2.update table     3.delete table");
-				System.out.println("4.조건 select      5.insert table     6.insert team");
+				System.out.println("4.조건 select      5.insert player     6.insert team");
 				System.out.println("7.insert coach,coach_contract,league,participation,team_coach");
 				System.out.println("8.insert stadium  9.insert schedule  10.find win,draw,loss");
 
@@ -129,10 +129,16 @@ public class term {
 
 			case 5:
 
-				System.out.println("player table 값 입력 : name,position,back_num,height,weight,contract_date");
+				
 				sc.nextLine();
-
-				PreparedStatement pstmt = con.prepareStatement("insert into player(name,position,back_num,height,weight,contract_date,t_name)value(?,?,?,?,?,?,?);");
+				rs=stmt.executeQuery("show full columns from player");
+				System.out.println("칼럼명");
+				while(rs.next()) {
+					System.out.print(rs.getString(1)+" ");
+				}
+				System.out.println("");
+				System.out.println("player table 값 입력 :");
+				pstmt = con.prepareStatement("insert into player(name,position,back_num,height,weight,contract_date,t_name)value(?,?,?,?,?,?,?);");
 				b=sc.next();
 				c=sc.next();
 				d=sc.next();
@@ -162,7 +168,12 @@ public class term {
 				break;
 				
 			case 6:
-				System.out.println("team table 값 입력 : team_name, frm, stadium, c_name");
+				rs=stmt.executeQuery("show full columns from team");
+				System.out.println("칼럼명");
+				while(rs.next()) {
+					System.out.print(rs.getString(1)+" ");
+				}
+				System.out.println("");
 				sc.nextLine();
 				pstmt = con.prepareStatement("insert into team value(?,?,?,?);");
 				System.out.print("팀이름 입력 : ");
@@ -188,7 +199,12 @@ public class term {
 			case 7:
 				System.out.println("table 입력 (league, coach ,team_coach, coach_contract, paricipation 만 가능)");
 				a=sc.next();
-				
+				rs=stmt.executeQuery("show full columns from "+a);
+				System.out.println("칼럼명");
+				while(rs.next()) {
+					System.out.print(rs.getString(1)+" ");
+				}
+				System.out.println("");
 				pstmt = con.prepareStatement("insert into "+a+" value(?,?);");
 				sc.nextLine();
 				System.out.println("칼럼1 값 입력 : ");
@@ -205,7 +221,12 @@ public class term {
 					System.out.println("내용이 입력 되었습니다.");
 				break;
 			case 8:
-				System.out.println("stadium table 값 입력 : stadium_name, address, ht_name");
+				rs=stmt.executeQuery("show full columns from stadium");
+				System.out.println("칼럼명");
+				while(rs.next()) {
+					System.out.print(rs.getString(1)+" ");
+				}
+				System.out.println("");
 				sc.nextLine();
 				pstmt = con.prepareStatement("insert into stadium value(?,?,?);");
 				System.out.print("구장 이름 입력 : ");
@@ -268,7 +289,6 @@ public class term {
 				sc.nextLine();
 				a=sc.nextLine();
 				b=sc.nextLine();
-				stmt=con.createStatement();
 				rs=stmt.executeQuery("select count(*) from schedule where (h_tm = '"+a+"' AND league_name = '"+b+"' AND h_score < a_score) OR (a_tm = '"+a+"' AND a_score<h_score)");
 				
 				if(rs.next()) {
@@ -285,8 +305,10 @@ public class term {
 					draw=rs.getInt(1);
 				}
 				int wm=win*3+draw;
-				System.out.println("승 : "+win+" 무 : "+draw+" 패 : "+loss+" 승점 : "+wm);
-				System.out.println("");
+				int game=win+draw+loss;
+				System.out.println("경기    승점    승    무    패");
+				
+				System.out.println(" "+game+"     "+wm+"  "+win+"  "+draw+"   "+loss);
 				break;
 			}
 				
