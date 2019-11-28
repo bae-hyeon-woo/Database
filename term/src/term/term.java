@@ -109,7 +109,7 @@ public class term {
 			case 4:
 				System.out.println("검색할 테이블 입력 : ");
 				a=sc.next();
-				System.out.println("검색할 내용 입력 : (ex id=9 , name='손흥민'");
+				System.out.println("검색할 내용 입력 : (ex id=9 , name='손흥민')");
 				b=sc.next();
 
 				rs=stmt.executeQuery("select * from "+a+" where "+b);
@@ -124,6 +124,7 @@ public class term {
 						i++;
 					}
 					System.out.println("");
+					System.out.println("");
 				}
 				break;
 
@@ -136,18 +137,23 @@ public class term {
 				while(rs.next()) {
 					System.out.print(rs.getString(1)+" ");
 				}
+				
 				System.out.println("");
-				System.out.println("player table 값 입력 :");
-				pstmt = con.prepareStatement("insert into player(name,position,back_num,height,weight,contract_date,t_name)value(?,?,?,?,?,?,?);");
-				b=sc.next();
-				c=sc.next();
-				d=sc.next();
-				e=sc.next();
-				f=sc.next();
-				g=sc.next();
-
-				sc.nextLine();
-				System.out.println("t_name 입력: ");
+				
+				pstmt = con.prepareStatement("insert into player(name,position,back_num,height,weight,c_date,t_name)value(?,?,?,?,?,?,?);");
+				System.out.print("이름 입력 : ");
+				b=sc.nextLine();
+				System.out.print("포지션 입력 : ");
+				c=sc.nextLine();
+				System.out.print("등번호 입력 : ");
+				d=sc.nextLine();
+				System.out.print("키 입력 : ");
+				e=sc.nextLine();
+				System.out.print("몸무게 입력 : ");
+				f=sc.nextLine();
+				System.out.print("계약날짜 입력 : ");
+				g=sc.nextLine();
+				System.out.println("팀이름 입력: ");
 				h=sc.nextLine();
 
 				pstmt.setString(1,b);
