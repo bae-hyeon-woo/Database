@@ -36,15 +36,16 @@ public class term {
 			int i=1;
 			System.out.println("menu");
 
-			System.out.println("1.select table    2.update table     3.delete table");
-			System.out.println("4.find data       5.insert table     6.insert team");
-			System.out.println("7.insert coach,coach_contract,league,participation,team_coach");
-			System.out.println("8.insert stadium  9.insert schedule");
 
-			menu=sc.nextInt();
 
 			String table;
-
+			do {
+				System.out.println("1.select table    2.update table     3.delete table");
+				System.out.println("4.조건 select      5.insert table     6.insert team");
+				System.out.println("7.insert coach,coach_contract,league,participation,team_coach");
+				System.out.println("8.insert stadium  9.insert schedule  10.find win,draw,loss");
+				System.out.println("99. quit");
+				menu=sc.nextInt();
 			switch (menu) {
 
 			case 1:
@@ -61,6 +62,7 @@ public class term {
 					}
 					System.out.println(" ");
 				}
+				System.out.println(" ");
 				break;
 
 			case 2:
@@ -94,26 +96,28 @@ public class term {
 					System.out.println("삭제 할  내용을 찾을 수 없습니다.");
 				}else{
 					System.out.println("삭제 되었습니다.");
-
 				}
 				break;
 
 			case 4:
 				System.out.println("검색할 테이블 입력 : ");
 				a=sc.next();
-				System.out.println("검색할 내용 입력 : ");
+				System.out.println("검색할 내용 입력 : (ex id=9 , name='손흥민'");
 				b=sc.next();
 
 				rs=stmt.executeQuery("select * from "+a+" where "+b);
 				rsmd = rs.getMetaData();
 				col=rsmd.getColumnCount();
-				i=1;
+	
 
-				while(rs.next())
+				while(rs.next()) {
+					i=1;
 					while(i<=col) {
 						System.out.print(rs.getString(i)+" ");
 						i++;
 					}
+					System.out.println("");
+				}
 				break;
 
 			case 5:
@@ -249,8 +253,37 @@ public class term {
 				else
 					System.out.println("내용이 입력 되었습니다.");
 				break;
+			case 10:
+				int win=0;
+				int draw=0;
+				int loss=0;
+				System.out.println("찾고자 하는 팀의 이름과 리그 입력 :");
+				sc.nextLine();
+				a=sc.nextLine();
+				b=sc.nextLine();
+				stmt=con.createStatement();
+				rs=stmt.executeQuery("select count(*) from schedule where (h_tm = '"+a+"' AND league_name = '"+b+"' AND h_score < a_score) OR (a_tm = '"+a+"' AND a_score<h_score)");
+				
+				if(rs.next()) {
+					loss=rs.getInt(1);
+				}
+				rs=stmt.executeQuery("select count(*) from schedule where (h_tm = '"+a+"' AND league_name = '"+b+"' AND h_score > a_score) OR (a_tm = '"+a+"' AND a_score>h_score)");
+				
+				if(rs.next()) {
+					win=rs.getInt(1);
+				}
+				rs=stmt.executeQuery("select count(*) from schedule where (h_tm = '"+a+"' AND league_name = '"+b+"' AND h_score = a_score) OR (a_tm = '"+a+"' AND a_score = h_score)");
+				
+				if(rs.next()) {
+					draw=rs.getInt(1);
+				}
+				int wm=win*3+draw;
+				System.out.println("승 : "+win+" 무 : "+draw+" 패 : "+loss+" 승점 : "+wm);
+				System.out.println("");
+				break;
 			}
 				
+			}while(menu!=99);
 			con.close();
 		}catch(Exception e) {
 			System.out.println(e);
